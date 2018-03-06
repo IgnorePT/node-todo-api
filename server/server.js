@@ -7,7 +7,6 @@ var {User} = require('./models/user');
 
 var app = express();
 
-
 app.use(bodyParser.json());
 
 //Save todos
@@ -22,7 +21,7 @@ app.post('/todos', (req, res) => {
         res.send(doc);
     }, (err) => {
         res.status(400).send(err);
-    })
+    });
 });
 
 //GET /Todos
@@ -33,7 +32,7 @@ app.get('/todos', (req, res) => {
     }, (err) => {
         res.status(400).send(err);
     });
-})
+});
 
 app.listen(3000, () => {
     console.log('Started on Port 3000');
