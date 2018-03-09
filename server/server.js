@@ -11,9 +11,8 @@ var port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
-//Save todos
+//Save Todos
 app.post('/todos', (req, res) => {
-    console.log();
 
     var todo = new Todo({
         text: req.body.text
@@ -40,31 +39,20 @@ app.get('/todos', (req, res) => {
 app.get('/todos/:id', (req, res) => {
     var id = req.params.id;
     
-    //validate ID (ObjectID);
-        // 404 - Not Found Empty Body
     if(!ObjectID.isValid(id)){
-        console.log('Todo id is not valid');
         return  res.status(404).send();
     }
-    
-    //findByID
-        //Success
-            //If todo - send it back
-            //If no todo - send back 404 - empty body
 
         Todo.findById(id).then((todo) => {
             if(!todo){
-                console.log('Todo not found');
+               
                 return  res.status(404).send();
             }
-            res.send(todo);
+            res.send({todo});
         }), (err) => {
             console.log('Unable to fetch todos');            
             res.status(404).send();
         }
-        //Error
-            //400 - Sendo Nothing
-
 
 });
 
@@ -77,20 +65,16 @@ app.delete('/todos/:id', (req, res) =>{
 
     //Validate ID - 404
     if(!ObjectID.isValid(id)){
-        console.log('Todo id is not valid');
+   
         return  res.status(404).send();
     }
 
-    // Remove todo by id
-
      Todo.findByIdAndRemove(id).then((todo) => {
-         // Success 
+
         if(!todo){
-            //If no doc send 404
             return  res.status(404).send();             
          }
-            //If doc send doc with 200
-            res.send(todo);
+            res.send({todo});
 
      }).catch((err) => {
 
